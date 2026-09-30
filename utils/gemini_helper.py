@@ -1,14 +1,24 @@
+import os
 import google.generativeai as genai
 import streamlit as st
 from PIL import Image
 
 def configure_gemini():
-    api_key = st.secrets.get("GEMINI_API_KEY")
+    api_key = None
+    try:
+        api_key = st.secrets.get("GEMINI_API_KEY") or st.secrets.get("GOOGLE_API_KEY")
+    except Exception:
+        pass
+    
     if not api_key:
-        st.error("Missing Gemini API Key! Please set it in .streamlit/secrets.toml")
+        api_key = os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY")
+        
+    if not api_key:
+        st.error("Missing Gemini API Key! Please set it in Streamlit Secrets or .env")
         return None
+        
     genai.configure(api_key=api_key)
-    return genai.GenerativeModel("gemini-2.5-flash")
+    return genai.GenerativeModel("gemini-1.5-flash")
 
 def farming_chatbot(question: str, language: str = "English") -> str:
     model = configure_gemini()
