@@ -1,0 +1,20 @@
+# Secret Keys & Environment files (NEVER commit these)
+.env
+.env.local
+.env.*.local
+.streamlit/secrets.toml
+
+# Python cache & virtual environment
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+env/
+.env/
+
+# IDE & OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
