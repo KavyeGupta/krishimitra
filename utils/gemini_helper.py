@@ -18,7 +18,15 @@ def configure_gemini():
         return None
         
     genai.configure(api_key=api_key)
-    return genai.GenerativeModel("gemini-1.5-flash")
+    
+    # Try the most universally supported models in order
+    for model_name in ["gemini-1.5-flash-latest", "gemini-pro", "gemini-1.5-flash", "gemini-1.5-pro"]:
+        try:
+            return genai.GenerativeModel(model_name)
+        except Exception:
+            continue
+            
+    return genai.GenerativeModel("gemini-pro")
 
 def farming_chatbot(question: str, language: str = "English") -> str:
     model = configure_gemini()
